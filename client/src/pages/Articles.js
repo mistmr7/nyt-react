@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import Jumbotron from "../components/Jumbotron/Jumbotron";
 import API from "../utils/API";
-// import { Link } from "react-router-dom";
 import axios from 'axios'
 import cheerio from 'cheerio'
-
-import Article from '../components/Article/Article'
+import { List, ListItem } from '../components/List'
+import DeleteBtn from '../components/Delete-btn/Delete-btn'
 
 class Articles extends Component {
   state = {
@@ -17,9 +16,13 @@ class Articles extends Component {
     saved: false
   };
 
-  // componentDidMount() {
-  //   this.loadArticles();
-  // }
+  componentDidMount() {
+    this.loadArticles();
+  }
+
+  clearArticles = () => {
+    API.clearArticles()
+  }
 
   scrapeArticles = () => {
     axios.get("http://www.nytimes.com/").then(function(response) {
@@ -44,12 +47,11 @@ class Articles extends Component {
           description: result.description,
           link: result.link,
           saved: false
+        })
+        .then(res => this.loadArticles())
+        .catch(err => console.log(err))    
       })
-        // .then(res => this.loadArticles())
-        // .catch(err => console.log(err))
     })
-    
-  })
   }
 
   buttonClickHandler = (event) => {
@@ -63,43 +65,37 @@ class Articles extends Component {
   loadArticles = () => {
     API.getArticles()
       .then(res =>
-        this.setState({ articles: res.data, title: "", author: "", synopsis: "" })
+        this.setState({ articles: res.data, title: "", description: "", link: "" })
       )
       .catch(err => console.log(err));
   };
 
   deleteArticle = id => {
     API.deleteArticle(id)
-      .then(res => this.loadBooks())
+      .then(res => this.loadArticles())
       .catch(err => console.log(err));
   };
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveArticle({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
-      })
-        .then(res => this.loadBooks())
-        .catch(err => console.log(err));
-    }
-  };
 
   render() {
     return (
       <div className="container">
         <Jumbotron 
         click={this.buttonClickHandler}/>
-        <Article />
+        {this.state.articles.length ? (
+              <List>
+                {this.state.articles.map(article => (
+                  <ListItem key={article._id}>
+                    <DeleteBtn
+                      onClick={() => this.deleteArticle(article._id)} />
+                    <a href={article.link}><h3>{article.title}</h3></a>
+                    <p>{article.description}</p>                    
+                  </ListItem>
+                ))}
+              </List>
+            ) : (
+              <h3>No Results to Display</h3>
+            )}
       </div>
     );
   }
