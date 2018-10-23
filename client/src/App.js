@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
-import Jumbotron from './Components/Jumbotron/Jumbotron'
-import Article from './Components/Article/Article'
+import Articles from './pages/Articles';
+
+
 
 class App extends Component {
+  
+  
   render() {
     return (
-      <div>
-        <Jumbotron />
-        <Article />
-      </div>      
+      <Router>
+        <div>
+          <Switch>
+            <Route exact path="/" component={Articles} />
+          </Switch>
+        </div>
+      </Router>
+            
     );
   }
 }
