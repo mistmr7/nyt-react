@@ -7,6 +7,12 @@ router.route("/")
   .post(articleController.create)
   .delete(articleController.removeAll);
 
+  
+// Matches with "/api/articles/saved/
+router.route("/saved")
+  .get(articleController.findSaved)
+  .delete(articleController.removeAll);
+
 // Matches with "/api/articles/:id"
 router
   .route("/:id")

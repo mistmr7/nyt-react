@@ -15,11 +15,23 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  create: function(req, res) {
+  findSaved: function(req, res) {
     db.Article
-      .create(req.body)
+      .find({"saved": true})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+  },
+  create: function(req, res) {
+    db.Article
+      .create(req.body, function(err, result){
+        if (err) {
+          return err
+        } else {
+          res.json(result)
+        }
+      })
+      // .then(dbModel => res.json(dbModel))
+      // .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
     db.Article
@@ -35,9 +47,10 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   removeAll: function(req, res) {
+    console.log()
     db.Article
-      .find(req.query)
-      .then(dbModel => dbModel.remove())
+      .deleteMany({})
+      // .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(423).json(err));
   }
