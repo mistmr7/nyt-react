@@ -23,10 +23,22 @@ class Articles extends Component {
 
   clearArticles = () => {
     API.clearArticles()
-    .then(res => this.loadArticles())    
+    .then(res => {
+      this.loadArticles()
+      this.state.savedArticles.forEach(article => {
+        API.saveArticle({
+          title: article.title,
+          description: article.description,
+          link: article.link,
+          saved: true
+        })
+      })
+    }).then(res=> {
+      this.loadSavedArticles()
+    })    
   }
 
-  scrapeArticles = () => {
+  scrapeArticles = async () => {
     
     axios.get("https://www.nytimes.com/").then(function(response) {
       // Then, we load that into cheerio and save it to $ for a shorthand selector
@@ -47,15 +59,20 @@ class Articles extends Component {
           title: result.title,
           description: result.description,
           link: result.link
-        })    
+        })  
+      })    
+    }).then(res => {
+      this.loadArticles()
+      this.setState({
+        articles: this.state.articles
       })
     })
+    
   }
 
   buttonClickHandler = (event) => {
     if(event.target.className.includes('scrape-btn')){
-      this.scrapeArticles()
-      this.loadArticles()
+      this.scrapeArticles().then(this.loadArticles())
     } else if (event.target.className.includes('clear-btn')) {
       this.clearArticles()
     }
