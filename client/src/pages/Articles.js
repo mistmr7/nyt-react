@@ -35,6 +35,7 @@ class Articles extends Component {
       })
     }).then(res=> {
       this.loadSavedArticles()
+      this.loadArticles()
     })    
   }
 
