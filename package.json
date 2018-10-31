@@ -1,9 +1,13 @@
 {
   "name": "nyt-react-scraper",
-  "version": "0.1.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "a NY Times React MongoDB scraper",
   "main": "server/server.js",
   "homepage": "https://rocky-sands-36273.herokuapp.com",
+  "engines": {
+    "node": "8.11.1",
+    "yarn": "1.10.0"
+  },
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
     "start:prod": "node server/server.js",
