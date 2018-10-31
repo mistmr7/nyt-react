@@ -3,7 +3,8 @@ import Jumbotron from "../components/Jumbotron/Jumbotron";
 import API from "../utils/API";
 import axios from 'axios'
 import cheerio from 'cheerio'
-import { List, ListItem } from '../components/List'
+import {List} from '../components/List/List'
+import {ListItem} from '../components/List/ListItem'
 import DeleteBtn from '../components/Delete-btn/Delete-btn'
 import SaveBtn from '../components/SaveBtn/SaveBtn'
 
