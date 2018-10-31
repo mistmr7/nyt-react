@@ -6,7 +6,8 @@
   "homepage": "https://rocky-sands-36273.herokuapp.com",
   "engines": {
     "node": "8.11.1",
-    "yarn": "1.10.0"
+    "yarn": "1.10.1",
+    "npm": "6.4.1"
   },
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
